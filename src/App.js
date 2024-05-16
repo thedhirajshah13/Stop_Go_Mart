@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import './App.css'
+import "./App.css";
 import Home from "./pages/Home";
 import {
-
   BrowserRouter,
   Routes,
   Route,
@@ -15,6 +14,7 @@ import State from "./context/State.js";
 import Footer from "./components/Footer.jsx";
 import Search from "./pages/Search.js";
 import SinglePage from "./components/SinglePage.jsx";
+import Cart from "./components/Cart.jsx";
 
 const PrivateRoute = ({ authenticated }) => {
   return authenticated ? <Outlet /> : <Navigate replace to="/" />;
@@ -46,15 +46,10 @@ const App = () => {
                 />
               }
             />
-            <Route
-              path="search"
-              element={<Search/>}
+            <Route path="search" element={<Search />} />
+            <Route path="productDetails/:prodId" element={<SinglePage />} />
 
-            />
-            <Route path="productDetails/:prodId" element={<SinglePage/>}/>
-
-            
-            
+            <Route path="cart" element={<Cart />} />
           </Route>
         </Routes>
       </State>

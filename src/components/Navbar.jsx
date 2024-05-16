@@ -70,7 +70,7 @@ Naviagte('/search')
         </div>
         <div className="profile">
           <Link>{<FavoriteIcon className="wishbtn" />}</Link>
-          <Link>{Cart.length}{ <ShoppingCartOutlinedIcon />}</Link>
+          <Link to='/cart'>{Cart.length}{ <ShoppingCartOutlinedIcon />}</Link>
           <Link onClick={hadlelogout}>
             <img src={userDetails.image} alt=<Person3Icon /> />{" "}
             <span>{userDetails.firstName}</span>

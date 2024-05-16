@@ -60,4 +60,22 @@
 .singleProduct .card .details{
     width: 50%;
     background-color: #f0f0f0;
+    margin: 2% 4%;
+}
+.singleProduct .card .details h2,p, h3, span,table{
+  margin: 2% 6%;
+}
+.details p{
+    font-weight: 600;
+}
+.details p span {
+  font-weight: 400;
+  
+}
+ td{
+    padding-left: 16px;
+    text-align: left;
+}
+th{
+    text-align: left;
 }
