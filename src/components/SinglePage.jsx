@@ -98,6 +98,7 @@ const SinglePage = () => {
                   <td>{prod.stock}</td>
                 </tr>
               </table>
+              <hr/>
             </div>
           </div>
         ))}
