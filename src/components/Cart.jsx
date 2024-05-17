@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import './cart.css'
 import Context from "../context/Context";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const Cart=()=>{
 const{state}=useContext(Context)
@@ -32,6 +33,7 @@ return(
             }
         </div>
        }
+       <Footer/>
 
     </>
 )

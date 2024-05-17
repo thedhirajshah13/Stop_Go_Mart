@@ -79,3 +79,31 @@
 th{
     text-align: left;
 }
+.rating span {
+   margin: 5px;
+   padding: 2px;
+}
+.price-tag{
+    margin: 0;
+    padding: 0;
+}
+.price{
+    display: flex;
+    justify-self: start;
+    column-gap: 4px;
+    margin-left: 30px;
+}
+.price p{
+    margin: 3px;
+    padding: 0;
+}
+.price p:nth-child(1){
+    font-size: 20px;
+    font-weight: 900;
+}
+.price p:nth-child(2){
+    font-weight: 100;
+}
+.price p:nth-child(3){
+    font-weight: 100;
+}

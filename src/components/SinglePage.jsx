@@ -7,13 +7,14 @@ import Context from "../context/Context";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import Stars from "./Stars";
-import { CiStar } from "react-icons/ci";
+
 
 const SinglePage = () => {
   const { state, dispatch } = useContext(Context);
   const { Product, Cart } = state;
   const { prodId } = useParams();
   const [imgNo, setimgNo] = useState(0);
+  console.log(Product.discount);
   function addToCart(prod) {
     dispatch({
       type: "ADD TO CART",
@@ -67,18 +68,21 @@ const SinglePage = () => {
             <div className="details">
               <p>{prod.description} </p>
               <h2>{prod.title}</h2>
-              <span>
+              <span className="rating">
                 {prod.rating}
-                <CiStar />
-              </span>
-              <span>
                 <Stars star={prod.rating} />
               </span>
-              {/* <p>Brand: <span>{prod.brand}</span> </p>
-              <p>Category: <span>{prod.category}</span></p>
-              <p>Discounted Price :<span>{prod.price}$</span></p>
-              
-              <p>In Stocks: <span>{prod.stock}</span></p> */}
+
+              <hr />
+              <span className="price-tag">
+                <p style={{color:'green'}}>Extra ${Math.trunc((prod.price)*prod.discountPercentage/100)} OFF</p>
+                <div className="price">
+                <p>${prod.price-Math.trunc((prod.price)*prod.discountPercentage/100)}</p>
+                <p style={{textDecoration:"line-through"}}>${prod.price}</p>
+                <p style={{color:"green"}}> {prod.discountPercentage}% OFF</p>
+
+                </div>
+              </span>
               <hr/>
               <table>
                 <tr>
@@ -89,16 +93,21 @@ const SinglePage = () => {
                   <th>Category:</th>
                   <td>{prod.category}</td>
                 </tr>
+                
                 <tr>
-                  <th>Price:</th>
-                  <td>{prod.price}$</td>
-                </tr>
-                <tr>
-                  <th>Stocks:</th>
-                  <td>{prod.stock}</td>
+                  <th
+                    style={
+                      prod.stock > 0
+                        ? { color: "green" }
+                        : { textDecoration: "line-through", color: "red" }
+                    }
+                  >
+                    In Stock:
+                  </th>
+                  <td>{prod.stock} Available</td>
                 </tr>
               </table>
-              <hr/>
+              <hr />
             </div>
           </div>
         ))}
