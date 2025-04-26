@@ -3,8 +3,10 @@ import "./cart.css";
 import Context from "../context/Context";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import Layout from "./Layout";
 import { GiReturnArrow } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
+import emptycartimage from "../asset/EmptyCart.jpg"
 
 const Cart = () => {
   const [checkBox, setcheckBox] = useState([]);
@@ -40,110 +42,117 @@ const Cart = () => {
 
   return (
     <>
-      <Navbar />
-      <h3>SHOPPING CART</h3>
-      {Cart.length < 0 ? (
-        <p>Cart is Empty</p>
-      ) : (
-        <>
-          <div className="top">
-            <input type="checkbox" name="ALL" onChange={handleChechBox} />
-            <label>
-              {checkBox.length}/{Cart.length} Selected
-            </label>
-            <p>REMOVE</p>
-            <p>Move to Wishlist</p>
+      <Layout>
+        <Navbar />
+        <h3>SHOPPING CART</h3>
+        {console.log(Cart.length)}
+        {Cart?.length == 0 ? (
+          <div>
+          <img  src={emptycartimage} alt="Empty Cart"/>
+          <p>Cart is Empty</p>
           </div>
-          <div className="cart-container">
-            <div className="cart">
-              {Cart.map((cartItem, index) => (
-                <div className="cartItem">
-                  <img src={cartItem.images[0]} alt="img" />
-                  <input
-                    type="checkbox"
-                    className="checkbox"
-                    name={cartItem.id}
-                    onChange={handleChechBox}
-                  />
-                  <div className="cartDescription">
-                    <p>{cartItem.title}</p>
-                    <p>{cartItem.category}</p>
-                    <p>Sold By:{cartItem.brand}</p>
-                    <select>
-                      <option>Qty:1</option>
-                      <option>Qty:2</option>
-                      <option>Qty:3</option>
-                      <option>Qty:4</option>
-                      <option>Qty:5</option>
-                      <option>Qty:6</option>
-                      <option>Qty:7</option>
-                      <option>Qty:8</option>
-                    </select>
-                    <div className="cartItemPrice">
-                      <p>
-                        $
-                        {cartItem.price -
-                          Math.trunc(
-                            (cartItem.price * cartItem.discountPercentage) / 100
-                          )}
-                      </p>
-                      <p style={{ textDecoration: "line-through" }}>
-                        ${cartItem.price}
-                      </p>
-                      <p style={{ color: "green" }}>
-                        {" "}
-                        {cartItem.discountPercentage}% OFF
-                      </p>
-                    </div>
-                    <div className="return">
-                      <span
-                        style={{
-                          border: "1px solid black",
-                          borderRadius: "55%",
-                          width: "20px",
-                          height: "20px",
-                        }}
-                      >
-                        {<GiReturnArrow />}
-                      </span>
-                      <p>
+        ) : (
+          <div>
+            <div className="top">
+              <input type="checkbox" name="ALL" onChange={handleChechBox} />
+              <label>
+                {checkBox.length}/{Cart.length} Selected
+              </label>
+              <p>REMOVE</p>
+              <p>Move to Wishlist</p>
+            </div>
+            <div className="cart-container">
+              <div className="cart">
+                {Cart.map((cartItem, index) => (
+                  <div className="cartItem">
+                    <img src={cartItem.images[0]} alt="img" />
+                    <input
+                      type="checkbox"
+                      className="checkbox"
+                      name={cartItem.id}
+                      onChange={handleChechBox}
+                    />
+                    <div className="cartDescription">
+                      <p>{cartItem.title}</p>
+                      <p>{cartItem.category}</p>
+                      <p>Sold By:{cartItem.brand}</p>
+                      <select>
+                        <option>Qty:1</option>
+                        <option>Qty:2</option>
+                        <option>Qty:3</option>
+                        <option>Qty:4</option>
+                        <option>Qty:5</option>
+                        <option>Qty:6</option>
+                        <option>Qty:7</option>
+                        <option>Qty:8</option>
+                      </select>
+                      <div className="cartItemPrice">
+                        <p>
+                          $
+                          {cartItem.price -
+                            Math.trunc(
+                              (cartItem.price * cartItem.discountPercentage) /
+                                100
+                            )}
+                        </p>
+                        <p style={{ textDecoration: "line-through" }}>
+                          ${cartItem.price}
+                        </p>
+                        <p style={{ color: "green" }}>
+                          {" "}
+                          {cartItem.discountPercentage}% OFF
+                        </p>
+                      </div>
+                      <div className="return">
                         <span
                           style={{
-                            margin: "0",
-                            padding: "0",
-                            fontWeight: "500",
+                            border: "1px solid black",
+                            borderRadius: "55%",
+                            width: "20px",
+                            height: "20px",
                           }}
                         >
-                          14 Days
-                        </span>{" "}
-                        Return availabel
-                      </p>
+                          {<GiReturnArrow />}
+                        </span>
+                        <p>
+                          <span
+                            style={{
+                              margin: "0",
+                              padding: "0",
+                              fontWeight: "500",
+                            }}
+                          >
+                            14 Days
+                          </span>{" "}
+                          Return availabel
+                        </p>
+                      </div>
+                    </div>
+                    <div className="removeFromCart">
+                      {
+                        <RxCross1
+                          style={{
+                            width: "25px",
+                            height: "25px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => removeFromCart(cartItem.id)}
+                        />
+                      }
                     </div>
                   </div>
-                  <div className="removeFromCart">
-                    {
-                      <RxCross1
-                        style={{
-                          width: "25px",
-                          height: "25px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => removeFromCart(cartItem.id)}
-                      />
-                    }
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <div className="billing">
-              <p>BILLING</p>
+              <div className="billing">
+                <p>BILLING</p>
+              </div>
             </div>
           </div>
-        </>
-      )}
+        )}
 
-      <Footer />
+        
+      </Layout>
     </>
   );
 };

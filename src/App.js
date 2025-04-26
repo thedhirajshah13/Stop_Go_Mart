@@ -11,46 +11,21 @@ import {
 
 import Authentication from "./pages/Authetiction.js";
 import State from "./context/State.js";
-import Footer from "./components/Footer.jsx";
+
 import Search from "./pages/Search.js";
 import SinglePage from "./components/SinglePage.jsx";
 import Cart from "./components/Cart.jsx";
-
-const PrivateRoute = ({ authenticated }) => {
-  return authenticated ? <Outlet /> : <Navigate replace to="/" />;
-};
+import SearchedProducts from "./components/SearchedProducts.jsx";
 
 const App = () => {
-  const [authenticated, setauthenticated] = useState(false);
   return (
     <BrowserRouter>
       <State>
-        <Authentication
-          authenticated={authenticated}
-          setauthenticated={setauthenticated}
-        />
-
         <Routes>
-          <Route
-            path="/"
-            element={
-              <PrivateRoute authenticated={authenticated}></PrivateRoute>
-            }
-          >
-            <Route
-              path="home"
-              element={
-                <Home
-                  authenticated={authenticated}
-                  setauthenticated={setauthenticated}
-                />
-              }
-            />
-            <Route path="search" element={<Search />} />
-            <Route path="productDetails/:prodId" element={<SinglePage />} />
-
-            <Route path="cart" element={<Cart />} />
-          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/productdetails/:prodId" element={<SinglePage/>}/>
         </Routes>
       </State>
     </BrowserRouter>

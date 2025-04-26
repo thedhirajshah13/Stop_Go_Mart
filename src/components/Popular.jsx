@@ -13,9 +13,10 @@ const Popular = () => {
   useEffect(() => {
     async function fetchproduct() {
       const productData = await fetch(
-        "https://dummyjson.com/products?limit=1000"
+        "https://dummyjson.com/products?limit=200"
       );
       const data = await productData.json();
+      // console.log(data.products.length)
       dispatch({
         type: "FETCH PRODUCT",
         payload: data.products,

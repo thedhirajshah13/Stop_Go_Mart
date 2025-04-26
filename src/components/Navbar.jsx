@@ -10,7 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Context from "../context/Context";
 
 const Navbar = ({ authenticated, setauthenticated }) => {
-  const { userDetails, state, dispatch } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const { Product, Cart } = state;
   const [search, setsearch] = useState("");
   const Naviagte=useNavigate()
@@ -22,12 +22,13 @@ const Navbar = ({ authenticated, setauthenticated }) => {
   }
 
   function searchProducts() {
+    console.log(Product)
     const searchedProducts = Product.filter(
       (prod) =>
-        prod.title.toLowerCase().includes(search) ||
-        prod.brand.toLowerCase().includes(search) ||
-        prod.category.toLowerCase().includes(search) ||
-        prod.description.toLowerCase().includes(search)
+        prod.title?.toLowerCase().includes(search) ||
+        prod.brand?.toLowerCase().includes(search) ||
+        prod.category?.toLowerCase().includes(search) ||
+        prod.description?.toLowerCase().includes(search)
     );
 dispatch(
   {
@@ -61,7 +62,7 @@ Naviagte('/search')
             type="text"
             placeholder="Search for Products, Brands and more."
             value={search}
-            onChange={(e) => setsearch(e.target.value.toLowerCase())}
+            onChange={(e) => setsearch(e.target.value?.toLowerCase())}
           />
           <button onClick={searchProducts}>
             {" "}
@@ -72,8 +73,8 @@ Naviagte('/search')
           <Link>{<FavoriteIcon className="wishbtn" />}</Link>
           <Link to='/cart'>{Cart.length}{ <ShoppingCartOutlinedIcon />}</Link>
           <Link onClick={hadlelogout}>
-            <img src={userDetails.image} alt=<Person3Icon /> />{" "}
-            <span>{userDetails.firstName}</span>
+            <img src="" alt=<Person3Icon /> />{" "}
+            <span>Name</span>
           </Link>
         </div>
       </div>

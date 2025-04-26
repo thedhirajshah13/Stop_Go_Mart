@@ -2,24 +2,22 @@ import React from "react";
 import Navbar from "../components/Navbar";
 
 import Front from "../components/Front";
-import Popular from '../components/Popular'
+import Popular from "../components/Popular";
 import Footer from "../components/Footer";
 import MostLiked from "../components/MostLiked";
+import Layout from "../components/Layout";
 
-const Home = ({ authenticated, setauthenticated }) => {
+const Home = () => {
   return (
-    <div>
-      <Navbar
-        authenticated={authenticated}
-        setauthenticated={setauthenticated}
-      />
+    <>
+      <Layout>
+        <Navbar />
 
-      <Front />
-      <Popular/>
-      <MostLiked/>
-      <Footer/>
-
-    </div>
+        <Front />
+        <Popular />
+        <MostLiked />
+      </Layout>
+    </>
   );
 };
 

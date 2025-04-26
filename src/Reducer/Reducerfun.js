@@ -1,4 +1,4 @@
-import { act } from "react-dom/test-utils";
+
 
 export const Reducerfun=(state,action)=>{
  const{Product, Cart, Searched,recentSearched}=state

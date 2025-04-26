@@ -110,7 +110,7 @@ const SearchedProducts = () => {
                 ))}
           </div>
         </div>
-        <Footer />
+        
       </div>
     </>
   );
