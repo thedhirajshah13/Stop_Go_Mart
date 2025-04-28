@@ -6,21 +6,27 @@ import Footer from "./Footer";
 import Layout from "./Layout";
 import { GiReturnArrow } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
-import emptycartimage from "../asset/EmptyCart.jpg"
+import emptycartimage from "../asset/EmptyCart.jpg";
 
 const Cart = () => {
   const [checkBox, setcheckBox] = useState([]);
   const { state, dispatch } = useContext(Context);
   const { Cart } = state;
+  // console.log("price" + Cart[0].price, "qun" + Cart[0].quantity);
+  function handleQuantity(id, quantity) {
+    dispatch({
+      type: "Quantity",
+      payload: { id, quantity: Number(quantity) },
+    });
+  }
   function removeFromCart(id) {
-    console.log(id);
     dispatch({
       type: "REMOVE FROM CART",
       payload: id,
     });
   }
   function handleChechBox(e) {
-    console.log(checkBox);
+    // console.log(checkBox);
     if (e.target.name === "ALL") {
       if (e.target.checked) {
         Cart.map((cartItem) =>
@@ -48,8 +54,8 @@ const Cart = () => {
         {console.log(Cart.length)}
         {Cart?.length == 0 ? (
           <div>
-          <img  src={emptycartimage} alt="Empty Cart"/>
-          <p>Cart is Empty</p>
+            <img src={emptycartimage} alt="Empty Cart" />
+            <p>Cart is Empty</p>
           </div>
         ) : (
           <div>
@@ -76,27 +82,35 @@ const Cart = () => {
                       <p>{cartItem.title}</p>
                       <p>{cartItem.category}</p>
                       <p>Sold By:{cartItem.brand}</p>
-                      <select>
-                        <option>Qty:1</option>
-                        <option>Qty:2</option>
-                        <option>Qty:3</option>
-                        <option>Qty:4</option>
-                        <option>Qty:5</option>
-                        <option>Qty:6</option>
-                        <option>Qty:7</option>
-                        <option>Qty:8</option>
+                      <select
+                        value={cartItem.quantity}
+                        onChange={(e) =>
+                          handleQuantity(cartItem.id, e.target.value)
+                        }
+                        style={{border:"none", borderRadius:"6%"}}
+                      >
+                        <option value={1}>Qty:1</option>
+                        <option value={2}>Qty:2</option>
+                        <option value={3}>Qty:3</option>
+                        <option value={4}>Qty:4</option>
+                        <option value={5}>Qty:5</option>
+                        <option value={6}>Qty:6</option>
+                        <option value={7}>Qty:7</option>
+                        <option value={8}>Qty:8</option>
                       </select>
                       <div className="cartItemPrice">
                         <p>
                           $
-                          {cartItem.price -
-                            Math.trunc(
-                              (cartItem.price * cartItem.discountPercentage) /
-                                100
-                            )}
+                          {Math.floor(cartItem.quantity *(
+                            cartItem.price -
+                              Math.trunc(
+                                (cartItem.price * cartItem.discountPercentage) /
+                                  100
+                              )
+                          )*100)/100}
                         </p>
                         <p style={{ textDecoration: "line-through" }}>
-                          ${cartItem.price}
+                          ${Math.floor((cartItem.price * cartItem.quantity)*100)/100}
                         </p>
                         <p style={{ color: "green" }}>
                           {" "}
@@ -150,8 +164,6 @@ const Cart = () => {
             </div>
           </div>
         )}
-
-        
       </Layout>
     </>
   );

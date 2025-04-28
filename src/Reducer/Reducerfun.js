@@ -1,25 +1,38 @@
+export const Reducerfun = (state, action) => {
+  const { Product, Cart, Searched, recentSearched } = state;
+  switch (action.type) {
+    case "FETCH PRODUCT":
+      return { ...state, Product: action.payload };
 
+    case "SEARCHED PRODUCTS":
+      return {
+        ...state,
+        Searched: [...action.payload],
+        recentSearched: action.payload,
+      };
 
-export const Reducerfun=(state,action)=>{
- const{Product, Cart, Searched,recentSearched}=state
-     switch (action.type) {
-        case "FETCH PRODUCT":
-            return {...state, Product:action.payload}
-            break;
-            case "SEARCHED PRODUCTS":
-                return {...state,Searched:[... action.payload],recentSearched:action.payload}
-                break;
-                case "ADD TO CART":
-                    return {...state, Cart:[...state.Cart, action.payload]}
-                    break;
-                    case "REMOVE FROM CART":
-                        return {...state, Cart:state.Cart.filter((cart)=>cart.id!==action.payload)}
-                        break;
+    case "ADD TO CART":
+      return {
+        ...state,
+        Cart: [...state.Cart, { ...action.payload, quantity: 1 }],
+      };
 
+    case "REMOVE FROM CART":
+      return {
+        ...state,
+        Cart: state.Cart.filter((cart) => cart.id !== action.payload),
+      };
+    case "Quantity":
+      return {
+        ...state,
+        Cart: state.Cart.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, quantity: action.payload.quantity }
+            : item
+        ),
+      };
 
-     
-        default:
-            break;
-     }
-    return state
-}
+    default:
+      return state;
+  }
+};
