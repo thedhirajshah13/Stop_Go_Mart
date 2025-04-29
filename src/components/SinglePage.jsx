@@ -15,7 +15,7 @@ const SinglePage = () => {
   const { Product, Cart } = state;
   const { prodId } = useParams();
   const [imgNo, setimgNo] = useState(0);
-  const [loadedImages, setLoadedImages] = useState({}); // track each image load separately
+  const [loadedImages, setLoadedImages] = useState({});
 
   function addToCart(prod) {
     console.log(prod);
@@ -127,15 +127,15 @@ const SinglePage = () => {
               <hr />
               <span className="price-tag">
                 <p style={{ color: "green" }}>
-                  Extra ${Math.trunc((selectedProduct.price * selectedProduct.discountPercentage) / 100)} OFF
+                  Extra ${Math.floor((Math.trunc((selectedProduct.price * selectedProduct.discountPercentage) / 100))*100)/100} OFF
                 </p>
                 <div className="price">
                   <p>
                     $
-                    {selectedProduct.price -
+                    {Math.floor((selectedProduct.price -
                       Math.trunc(
                         (selectedProduct.price * selectedProduct.discountPercentage) / 100
-                      )}
+                      ))*100)/100}
                   </p>
                   <p style={{ textDecoration: "line-through" }}>
                     ${selectedProduct.price}
