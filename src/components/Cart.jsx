@@ -9,10 +9,11 @@ import { RxCross1 } from "react-icons/rx";
 import emptycartimage from "../asset/EmptyCart.jpg";
 
 const Cart = () => {
-  const [checkBox, setcheckBox] = useState([]);
+  const [checkBox, setcheckBox] = useState({});
+
   const { state, dispatch } = useContext(Context);
   const { Cart } = state;
-  // console.log("price" + Cart[0].price, "qun" + Cart[0].quantity);
+
   function handleQuantity(id, quantity) {
     dispatch({
       type: "Quantity",
@@ -25,25 +26,31 @@ const Cart = () => {
       payload: id,
     });
   }
-  function handleChechBox(e) {
+
+  const handleChechBox = (e) => {
+    const { name, checked } = e.target;
+    // console.log(checked, name);
     // console.log(checkBox);
-    if (e.target.name === "ALL") {
-      if (e.target.checked) {
-        Cart.map((cartItem) =>
-          setcheckBox((values) => [...values, { id: cartItem.id }])
-        );
-      } else {
-        setcheckBox([]);
-      }
+    // console.log(checkBoxItem);
+    if (name === "ALL") {
+      const allChecked = {};
+      Cart.forEach((item) => {
+        allChecked[item.id] = checked;
+      });
+      setcheckBox(allChecked);
     } else {
-      if (e.target.checked) {
-        setcheckBox((values) => [...values, { id: e.target.name }]);
-      } else {
-        setcheckBox((values) =>
-          values.filter((data) => data.id !== e.target.name)
-        );
-      }
+      setcheckBox((prev) => ({
+        ...prev,
+        [name]: checked,
+      }));
     }
+  };
+
+  const handleRemoveAll=()=>{
+    dispatch({
+      type:"REMOVE ALL",
+      payload:checkBox
+    })
   }
 
   return (
@@ -60,11 +67,20 @@ const Cart = () => {
         ) : (
           <div>
             <div className="top">
-              <input type="checkbox" name="ALL" onChange={handleChechBox} />
+              <input
+                type="checkbox"
+                name="ALL"
+                onChange={handleChechBox}
+                checked={
+                  Cart.length > 0 && Cart.every((item) => checkBox[item.id])
+                }
+              />
               <label>
-                {checkBox.length}/{Cart.length} Selected
+                {Object.values(checkBox).filter(Boolean).length}/{Cart.length}{" "}
+                Selected
               </label>
-              <p>REMOVE</p>
+
+              <p style={{cursor:"pointer"}} onClick={handleRemoveAll}>REMOVE</p>
               <p>Move to Wishlist</p>
             </div>
             <div className="cart-container">
@@ -76,8 +92,10 @@ const Cart = () => {
                       type="checkbox"
                       className="checkbox"
                       name={cartItem.id}
+                      checked={!!checkBox[cartItem.id]}
                       onChange={handleChechBox}
                     />
+
                     <div className="cartDescription">
                       <p>{cartItem.title}</p>
                       <p>{cartItem.category}</p>
@@ -87,7 +105,7 @@ const Cart = () => {
                         onChange={(e) =>
                           handleQuantity(cartItem.id, e.target.value)
                         }
-                        style={{border:"none", borderRadius:"6%"}}
+                        style={{ border: "none", borderRadius: "6%" }}
                       >
                         <option value={1}>Qty:1</option>
                         <option value={2}>Qty:2</option>
@@ -101,16 +119,22 @@ const Cart = () => {
                       <div className="cartItemPrice">
                         <p>
                           $
-                          {Math.floor(cartItem.quantity *(
-                            cartItem.price -
-                              Math.trunc(
-                                (cartItem.price * cartItem.discountPercentage) /
-                                  100
-                              )
-                          )*100)/100}
+                          {Math.floor(
+                            cartItem.quantity *
+                              (cartItem.price -
+                                Math.trunc(
+                                  (cartItem.price *
+                                    cartItem.discountPercentage) /
+                                    100
+                                )) *
+                              100
+                          ) / 100}
                         </p>
                         <p style={{ textDecoration: "line-through" }}>
-                          ${Math.floor((cartItem.price * cartItem.quantity)*100)/100}
+                          $
+                          {Math.floor(
+                            cartItem.price * cartItem.quantity * 100
+                          ) / 100}
                         </p>
                         <p style={{ color: "green" }}>
                           {" "}
@@ -170,37 +194,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
-// brand
-// :
-// "Apple"
-// category
-// :
-// "smartphones"
-// description
-// :
-// "An apple mobile which is nothing like apple"
-// discountPercentage
-// :
-// 12.96
-// id
-// :
-// 1
-// images
-// :
-// (5) ['https://cdn.dummyjson.com/cartItemuct-images/1/1.jpg', 'https://cdn.dummyjson.com/cartItemuct-images/1/2.jpg', 'https://cdn.dummyjson.com/cartItemuct-images/1/3.jpg', 'https://cdn.dummyjson.com/cartItemuct-images/1/4.jpg', 'https://cdn.dummyjson.com/cartItemuct-images/1/thumbnail.jpg']
-// price
-// :
-// 549
-// rating
-// :
-// 4.69
-// stock
-// :
-// 94
-// thumbnail
-// :
-// "https://cdn.dummyjson.com/cartItemuct-images/1/thumbnail.jpg"
-// title
-// :
-// "iPhone 9"

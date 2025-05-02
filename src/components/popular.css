@@ -92,3 +92,25 @@
   font-weight: 500;
   color: #444;
 }
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .popular-card {
+    width: 30%;
+  }
+}
+
+@media (max-width: 768px) {
+  .popular-card {
+    width: 45%;
+  }
+}
+
+@media (max-width: 480px) {
+  .popular-sec {
+    justify-content: center;
+  }
+  .popular-card {
+    width: 90%;
+  }
+}

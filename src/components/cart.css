@@ -3,10 +3,11 @@
    
     display: flex;
     justify-content: start;
+    gap: 40px;
 }
 .top label{
     
-    margin: 20px 0 0 14px;
+    margin: 0px 0 0 14px;
     font-weight: 500;
 }
 

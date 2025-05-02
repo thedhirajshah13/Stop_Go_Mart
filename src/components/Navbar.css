@@ -3,123 +3,183 @@ body {
   padding: 0;
   width: 100vw;
   overflow-x: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 .navbar {
   width: 100%;
-  height: 80px;
   background-color: #fff;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-
-  padding: 0 15px;
+  padding: 10px 5vw;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
+
 .navbar a {
   color: black;
-}
-.navbar .logo img {
-  width: 57px;
-  height: 48px;
-  aspect-ratio: 2/3;
-  object-fit: contain;
-  
-}
-.navbar .navitem {
-  width: 293px;
-  height: 22px;
-}
-.navbar .navitem a {
   text-decoration: none;
+}
 
+.navbar .logo img {
+  width: 50px;
+  height: auto;
+  object-fit: contain;
+}
+
+.navbar .navitem {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.navbar .navitem a {
   padding: 0 10px;
   font-weight: 400;
+  transition: font-weight 0.2s ease;
 }
+
 .navbar .navitem a:hover {
   font-weight: 600;
-  scale: 10px;
 }
+
 .navbar .search {
-  width: 534px;
-  height: 52px;
+  flex: 1 1 300px;
+  max-width: 600px;
+  height: 45px;
   background-color: #f0f0f0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 15px;
-  border-radius: 10px;
-  box-shadow: 5px 5px 4px #848484;
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px rgba(132, 132, 132, 0.3);
+  overflow: hidden;
   position: relative;
 }
-.navbar .search input{
-  width: 88%;
-  height: 100%;
-  outline: none;
-  position: absolute;
-  left: 2;
-  border-radius: 10px;
-  box-shadow: 5px 5px 4px #848484;
-  border: none;
-  background-color: #f0f0f0;
-  font-size: 17px;
-}
-.navbar .search input ::placeholder{
-  font-size: 50px;
-}
-.navbar .search button{
-  width: 12%;
-  height: 100%;
-  outline: none;
-  position: absolute;
-  right: 0;
-  border-radius: 10px;
-  box-shadow: 5px 5px 4px #848484;
-  border: none;
-  background-color: #f0f0f0;
 
+.navbar .search input {
+  flex: 1;
+  border: none;
+  padding: 0 10px;
+  font-size: 16px;
+  background-color: transparent;
+  outline: none;
 }
+
+.navbar .search input::placeholder {
+  font-size: 16px;
+  color: #aaa;
+}
+
+.navbar .search button {
+  background-color: transparent;
+  border: none;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #444;
+}
+
 .navbar .profile {
-  width: 263px;
-  height: 22px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.navbar .profile a {
+  text-decoration: none;
   display: flex;
   align-items: center;
 }
-.navbar .profile a {
-  text-decoration: none;
-  padding: 0 10px;
-}
+
 .wishbtn:hover {
   color: red;
 }
+
+/* Profile Image */
+.profile img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 /* ANNOUNCEMENT SECTION */
 .announcement {
   width: 100%;
-  height: 51px;
-  position: relative;
+  padding: 12px 0;
   background-color: #f9faff;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  font-size: 14px;
 }
+
 .announcement span {
-  margin: 0 20px;
-  font-weight: 400;
   color: #00398f;
+  font-weight: 500;
+  margin: 0 10px;
 }
+
 .announcement button {
-  border: none;
   position: absolute;
   right: 2%;
-  background-color: #f9faff;
+  background-color: transparent;
+  border: none;
   color: #848484;
+  font-size: 16px;
+  cursor: pointer;
 }
-.profile img {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
+
+/* 🔁 Responsive Media Queries */
+@media (max-width: 992px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 20px;
+  }
+
+  .navbar .search {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .navbar .navitem {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .navbar .profile {
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 10px;
+  }
 }
-.profile a {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  text-align: center;
+
+@media (max-width: 576px) {
+  .navbar .navitem a {
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  .navbar .search input::placeholder {
+    font-size: 14px;
+  }
+
+  .announcement {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .profile img {
+    width: 24px;
+    height: 24px;
+  }
 }

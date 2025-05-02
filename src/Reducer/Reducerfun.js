@@ -22,6 +22,11 @@ export const Reducerfun = (state, action) => {
         ...state,
         Cart: state.Cart.filter((cart) => cart.id !== action.payload),
       };
+    case "REMOVE ALL":
+      return{
+        ...state,
+        Cart:[]
+      }  
     case "Quantity":
       return {
         ...state,
