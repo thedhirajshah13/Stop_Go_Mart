@@ -107,10 +107,11 @@
 }
 
 @media (max-width: 480px) {
-  .popular-sec {
+  .popular .popular-sec {
     justify-content: center;
+    flex: 0 0 100%;
   }
-  .popular-card {
+  .popular-sec .popular-card {
     width: 90%;
   }
 }

@@ -13,7 +13,7 @@ const Navbar = ({ authenticated, setauthenticated }) => {
   const { state, dispatch } = useContext(Context);
   const { Product, Cart } = state;
   const [search, setsearch] = useState("");
-  const Naviagte=useNavigate()
+  const Naviagte = useNavigate();
   // console.log(userDetails)
   console.log(search);
   function hadlelogout() {
@@ -22,7 +22,7 @@ const Navbar = ({ authenticated, setauthenticated }) => {
   }
 
   function searchProducts() {
-    console.log(Product)
+    console.log(Product);
     const searchedProducts = Product.filter(
       (prod) =>
         prod.title?.toLowerCase().includes(search) ||
@@ -30,15 +30,12 @@ const Navbar = ({ authenticated, setauthenticated }) => {
         prod.category?.toLowerCase().includes(search) ||
         prod.description?.toLowerCase().includes(search)
     );
-dispatch(
-  {
-    type:'SEARCHED PRODUCTS',
-    payload:searchedProducts
-  }
-)
+    dispatch({
+      type: "SEARCHED PRODUCTS",
+      payload: searchedProducts,
+    });
 
-Naviagte('/search')
-    
+    Naviagte("/search");
   }
 
   return (
@@ -64,17 +61,19 @@ Naviagte('/search')
             value={search}
             onChange={(e) => setsearch(e.target.value?.toLowerCase())}
           />
-          <button onClick={searchProducts}>
+          <button onClick={searchProducts} onKeyDown={searchProducts}>
             {" "}
             <Link>{<SearchIcon />}</Link>
           </button>
         </div>
         <div className="profile">
           <Link>{<FavoriteIcon className="wishbtn" />}</Link>
-          <Link to='/cart'>{Cart.length}{ <ShoppingCartOutlinedIcon />}</Link>
+          <Link to="/cart">
+            {Cart.length}
+            {<ShoppingCartOutlinedIcon />}
+          </Link>
           <Link onClick={hadlelogout}>
-            <img src="" alt=<Person3Icon /> />{" "}
-            <span>Name</span>
+            <img src="" alt=<Person3Icon /> /> <span>Name</span>
           </Link>
         </div>
       </div>
