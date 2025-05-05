@@ -14,7 +14,7 @@ const Navbar = ({ authenticated, setauthenticated }) => {
   const { Product, Cart } = state;
   const [search, setsearch] = useState("");
   const Naviagte = useNavigate();
-  // console.log(userDetails)
+  
   console.log(search);
   function hadlelogout() {
     setauthenticated(false);
@@ -36,6 +36,11 @@ const Navbar = ({ authenticated, setauthenticated }) => {
     });
 
     Naviagte("/search");
+  }
+  const handleKeyPress=(e)=>{
+    if(e.key==='Enter'){
+      searchProducts();
+    }
   }
 
   return (
@@ -60,8 +65,9 @@ const Navbar = ({ authenticated, setauthenticated }) => {
             placeholder="Search for Products, Brands and more."
             value={search}
             onChange={(e) => setsearch(e.target.value?.toLowerCase())}
+            onKeyDown={handleKeyPress}
           />
-          <button onClick={searchProducts} onKeyDown={searchProducts}>
+          <button onClick={searchProducts}>
             {" "}
             <Link>{<SearchIcon />}</Link>
           </button>

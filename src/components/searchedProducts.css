@@ -9,6 +9,7 @@
   padding: 20px;
   gap: 20px;
   background-color: #f9f9f9;
+  
 }
 
 .searchedProducts .sidepanel {
@@ -35,6 +36,7 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
   padding: 10px;
+  
 }
 
 .searchedProducts .mainpanel .searched-card:hover {

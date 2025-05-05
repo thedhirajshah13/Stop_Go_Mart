@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import "./searchedProducts.css";
 import Navbar from "./Navbar";
-import Footer from "./Footer";
+
 import Context from "../context/Context";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
@@ -11,17 +11,46 @@ const SearchedProducts = () => {
 
   const { state, dispatch } = useContext(Context);
   const { Searched, Product, Cart } = state;
-  console.log(Searched, Cart);
+  const [min, setMin]=useState("Min");
+  const [max, setMax]=useState(5000)
+  const [category, setCategory] = useState([]);
+  const [rating, setRating] = useState([]);
+  const [discount, setDiscount] = useState([]);
+  const [radio, setRadio]=useState({
+    min:0,
+    max:10
+  })
 
   const unique = [...new Set(Searched.map((data) => data.category))];
-  console.log(unique)
+  
+
+  const handleCategoryCheckBox = (cat) => {
+    setCategory((prev) =>
+      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+    );
+
+    console.log(category);
+  };
+  const handleRatingCheckbox = (rate) => {
+    setRating((prev) =>
+      prev.includes(rate) ? prev.filter((r) => r !== rate) : [...prev, rate]
+    );
+
+    console.log(rating);
+  };
+  const handleDiscountCheckBox = (dis) => {
+    setDiscount((prev) =>
+      prev.includes(dis) ? prev.filter((d) => d !== dis) : [...prev, dis]
+    );
+    console.log(discount);
+  };
 
   const ADDTOCART = (prod) => {
     dispatch({
       type: "ADD TO CART",
       payload: prod,
     });
-    //    console.log(Cart.length)
+    
   };
 
   const REMOVECART = (prodId) => {
@@ -43,33 +72,37 @@ const SearchedProducts = () => {
               <input type="range" />
               <br />
 
-              <select>
-                <option>500</option>
-                <option>700</option>
-                <option>1000</option>
-                <option>5000</option>
+              <select value={min} onChange={(e)=>setMin(e.target.value)}>
+                <option>Min</option>
+                <option>10</option>
+                <option>50</option>
+                <option>100</option>
               </select>
               <span>To</span>
-              <select>
-                <option>500</option>
-                <option>700</option>
+              <select value={max} onChange={(e)=>setMax(e.target.value)}>
+                
+                <option>50</option>
+                <option>100</option>
                 <option>1000</option>
-                <option>5000</option>
+                <option value={5000}>5000+</option>
               </select>
             </div>
             <div>
-                <p>CATEGORIES</p>
+              <p>CATEGORIES</p>
 
-                {unique.map((prod) => (
-                  <>
-                    <input type="checkbox" />
-                    <label>{prod}</label>
-                    <br/>
-                  </>
-                ))}
-              </div>
+              {unique.map((cat) => (
+                <>
+                  <input
+                    type="checkbox"
+                    value={cat}
+                    onChange={() => handleCategoryCheckBox(cat)}
+                  />
+                  <label>{cat}</label>
+                  <br />
+                </>
+              ))}
+            </div>
             <div>
-              
               <p>IDEAL FOR</p>
 
               <input type="checkbox" />
@@ -90,31 +123,37 @@ const SearchedProducts = () => {
             </div>
             <div>
               <p>DISCOUNT</p>
-              <input type="checkbox"/>
-              <label>60% or more</label>
-              <br/>
-              <input type="checkbox"/>
-              <label>50% or more</label>
-              <br/>
-              <input type="checkbox"/>
-              <label>40% or more</label>
-              <br/>
-              <input type="checkbox"/>
-              <label>30% or more</label>
-              <br/>
-              <input type="checkbox"/>
-              <label>20% or more</label>
-              <br/>
-              <input type="checkbox"/>
-              <label>10% or more</label>
 
+              <input
+                type="checkbox"
+                onChange={() => handleDiscountCheckBox(40)}
+              />
+              <label>40% or more</label>
+              <br />
+              <input
+                type="checkbox"
+                onChange={() => handleDiscountCheckBox(30)}
+              />
+              <label>30% or more</label>
+              <br />
+              <input
+                type="checkbox"
+                onChange={() => handleDiscountCheckBox(20)}
+              />
+              <label>20% or more</label>
+              <br />
+              <input
+                type="checkbox"
+                onChange={() => handleDiscountCheckBox(10)}
+              />
+              <label>10% or more</label>
             </div>
             <div>
               <p>Customers Rating</p>
-              <input type="checkbox"/>
+              <input type="checkbox" onChange={() => handleRatingCheckbox(4)} />
               <label>4 and above</label>
-              <br/>
-              <input type="checkbox"/>
+              <br />
+              <input type="checkbox" onChange={() => handleRatingCheckbox(3)} />
               <label>3 and above</label>
             </div>
           </div>
