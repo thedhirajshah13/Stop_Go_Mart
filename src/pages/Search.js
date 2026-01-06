@@ -5,7 +5,9 @@ import SearchedProducts from "../components/SearchedProducts";
 const Search = () => {
   return (
     <Layout>
-      <SearchedProducts />
+      <div className="page-wrapper">
+        <SearchedProducts />
+      </div>
     </Layout>
   );
 };

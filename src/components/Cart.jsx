@@ -14,6 +14,22 @@ const Cart = () => {
   const { state, dispatch } = useContext(Context);
   const { Cart } = state;
 
+  // Billing calculations
+  const subtotal = Cart.reduce((sum, item) => {
+    const discounted = item.price * (1 - item.discountPercentage / 100);
+    return sum + discounted * (item.quantity || 1);
+  }, 0);
+
+  const originalTotal = Cart.reduce(
+    (sum, item) => sum + item.price * (item.quantity || 1),
+    0
+  );
+
+  const discountTotal = originalTotal - subtotal;
+  const tax = +(subtotal * 0.05).toFixed(2); // 5% tax
+  const shipping = subtotal > 50 || subtotal === 0 ? 0 : 5.0;
+  const total = +(subtotal + tax + shipping).toFixed(2);
+
   function handleQuantity(id, quantity) {
     dispatch({
       type: "Quantity",
@@ -183,7 +199,43 @@ const Cart = () => {
               </div>
 
               <div className="billing">
-                <p>BILLING</p>
+                <h4>BILLING SUMMARY</h4>
+                <div style={{display:'flex',justifyContent:'space-between',marginTop:'10px'}}>
+                  <span>Items ({Cart.length})</span>
+                  <span>${originalTotal.toFixed(2)}</span>
+                </div>
+
+                <div style={{display:'flex',justifyContent:'space-between',marginTop:'8px'}}>
+                  <span>Discount</span>
+                  <span style={{color:'var(--accent-2)'}}>- ${discountTotal.toFixed(2)}</span>
+                </div>
+
+                <div style={{display:'flex',justifyContent:'space-between',marginTop:'8px'}}>
+                  <span>Subtotal</span>
+                  <strong>${subtotal.toFixed(2)}</strong>
+                </div>
+
+                <div style={{display:'flex',justifyContent:'space-between',marginTop:'8px'}}>
+                  <span>Tax (5%)</span>
+                  <span>${tax.toFixed(2)}</span>
+                </div>
+
+                <div style={{display:'flex',justifyContent:'space-between',marginTop:'8px'}}>
+                  <span>Shipping</span>
+                  <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                </div>
+
+                <hr style={{margin:'12px 0',borderColor:'rgba(15,23,42,0.06)'}} />
+
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                  <strong>Total</strong>
+                  <strong style={{color:'var(--accent-2)'}}>${total.toFixed(2)}</strong>
+                </div>
+
+                <div style={{marginTop:'12px',display:'flex',flexDirection:'column',gap:'8px'}}>
+                  <button className="checkout-btn">Proceed to Checkout</button>
+                  <button className="checkout-btn" style={{background:'transparent',color:'var(--muted)',border:'1px solid rgba(15,23,42,0.06)'}} onClick={()=>dispatch({type:'APPLY_COUPON',payload:null})}>Apply Coupon</button>
+                </div>
               </div>
             </div>
           </div>

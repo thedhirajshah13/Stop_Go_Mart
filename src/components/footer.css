@@ -1,7 +1,7 @@
 .footer-section {
-  background-color: #000;
+  background-color: #0b1220;
   width: 100%;
-  padding: 40px 20px;
+  padding: 18px 14px; /* reduced vertical padding to shrink height */
   color: #fff;
 }
 
@@ -9,43 +9,57 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 20px;
+  gap: 20px; /* tightened gap */
   max-width: 1200px;
   margin: 0 auto;
+  align-items: flex-start;
 }
 
 .footer .details {
   display: flex;
   flex-wrap: wrap;
-  gap: 40px;
-  width: 100%;
+  gap: 18px; /* tightened spacing */
+  flex: 2;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .footer .details .details-content {
   display: flex;
   flex-direction: column;
-  min-width: 150px;
+  min-width: 180px;
 }
 
 .footer .details .details-content p {
-  font-weight: 300;
-  color: grey;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px; /* reduce spacing under headings */
+  font-size: 0.98rem;
 }
 
 .footer .details .details-content a {
-  color: #fff;
+  color: #cbd5e1;
   text-decoration: none;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.92rem; /* slightly smaller to reduce vertical density */
   margin-bottom: 6px;
-  transition: color 0.3s ease;
+  transition: color 0.18s ease;
 }
 
 .footer .details .details-content a:hover {
-  color: #999;
+  color: #fff;
+}
+
+/* Address Section */
+.footer .address {
+  flex: 1;
+  min-width: 180px;
+}
+
+.footer .address h2 {
+  font-size: 1.02rem;
+  margin-bottom: 6px;
+  font-weight: 600;
 }
 
 /* Responsive Media Queries */
@@ -53,14 +67,34 @@
   .footer {
     flex-direction: column;
     align-items: flex-start;
+    gap: 20px;
   }
 
   .footer .details {
     flex-direction: column;
     gap: 20px;
+    width: 100%;
   }
 
   .footer .details .details-content {
     width: 100%;
+  }
+
+  .footer .address {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-section {
+    padding: 14px 12px;
+  }
+
+  .footer .details .details-content p {
+    font-size: 0.95rem;
+  }
+
+  .footer .details .details-content a {
+    font-size: 0.85rem;
   }
 }

@@ -1,5 +1,5 @@
 export const Reducerfun = (state, action) => {
-  const { Product, Cart, Searched, recentSearched } = state;
+  // const { Product, Cart, Searched, recentSearched } = state;
   switch (action.type) {
     case "FETCH PRODUCT":
       return { ...state, Product: action.payload };

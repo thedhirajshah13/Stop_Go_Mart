@@ -1,242 +1,202 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo } from "react";
 import "./searchedProducts.css";
 import Navbar from "./Navbar";
-
 import Context from "../context/Context";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import { useNavigate } from "react-router-dom";
+
 const SearchedProducts = () => {
   const Navigate = useNavigate();
-
   const { state, dispatch } = useContext(Context);
   const { Searched, Product, Cart } = state;
-  const [min, setMin]=useState("Min");
-  const [max, setMax]=useState(5000)
+
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(5000);
   const [category, setCategory] = useState([]);
   const [rating, setRating] = useState([]);
   const [discount, setDiscount] = useState([]);
-  const [radio, setRadio]=useState({
-    min:0,
-    max:10
-  })
 
+  // Extract unique categories from searched list
   const unique = [...new Set(Searched.map((data) => data.category))];
-  
 
+  // =======================
+  // Handle filter toggles
+  // =======================
   const handleCategoryCheckBox = (cat) => {
     setCategory((prev) =>
       prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
     );
-
-    console.log(category);
   };
+
   const handleRatingCheckbox = (rate) => {
     setRating((prev) =>
       prev.includes(rate) ? prev.filter((r) => r !== rate) : [...prev, rate]
     );
-
-    console.log(rating);
   };
+
   const handleDiscountCheckBox = (dis) => {
     setDiscount((prev) =>
       prev.includes(dis) ? prev.filter((d) => d !== dis) : [...prev, dis]
     );
-    console.log(discount);
   };
 
+  // =======================
+  // Cart Actions
+  // =======================
   const ADDTOCART = (prod) => {
-    dispatch({
-      type: "ADD TO CART",
-      payload: prod,
-    });
-    
+    dispatch({ type: "ADD TO CART", payload: prod });
   };
 
   const REMOVECART = (prodId) => {
-    dispatch({
-      type: "REMOVE FROM CART",
-      payload: prodId,
-    });
+    dispatch({ type: "REMOVE FROM CART", payload: prodId });
   };
+
+  // =======================
+  // Filtering Logic
+  // =======================
+  const filteredProducts = useMemo(() => {
+    const baseList = Searched.length > 0 ? Searched : Product;
+
+    return baseList.filter((prod) => {
+      const withinPrice = prod.price >= min && prod.price <= max;
+      const matchCategory = category.length
+        ? category.includes(prod.category)
+        : true;
+      const matchDiscount = discount.length
+        ? discount.some((d) => prod.discountPercentage >= d)
+        : true;
+      const matchRating = rating.length
+        ? rating.some((r) => prod.rating >= r)
+        : true;
+
+      return withinPrice && matchCategory && matchDiscount && matchRating;
+    });
+  }, [Searched, Product, min, max, category, discount, rating]);
 
   return (
     <>
+      <Navbar />
       <div className="search">
-        <Navbar />
         <div className="searchedProducts">
+          {/* Sidebar Filters */}
           <div className="sidepanel">
             <h1>FILTERS</h1>
+
+            {/* Price Filter */}
             <div>
               <p>PRICE</p>
-              <input type="range" />
-              <br />
-
-              <select value={min} onChange={(e)=>setMin(e.target.value)}>
-                <option>Min</option>
-                <option>10</option>
-                <option>50</option>
-                <option>100</option>
+              <select
+                value={min}
+                onChange={(e) => setMin(Number(e.target.value))}
+              >
+                <option value={0}>Min</option>
+                <option value={10}>10</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
               </select>
-              <span>To</span>
-              <select value={max} onChange={(e)=>setMax(e.target.value)}>
-                
-                <option>50</option>
-                <option>100</option>
-                <option>1000</option>
+              <span> to </span>
+              <select
+                value={max}
+                onChange={(e) => setMax(Number(e.target.value))}
+              >
+                <option value={100}>100</option>
+                <option value={500}>500</option>
+                <option value={1000}>1000</option>
                 <option value={5000}>5000+</option>
               </select>
             </div>
+
+            {/* Category Filter */}
             <div>
               <p>CATEGORIES</p>
-
               {unique.map((cat) => (
-                <>
+                <div key={cat}>
                   <input
                     type="checkbox"
-                    value={cat}
+                    checked={category.includes(cat)}
                     onChange={() => handleCategoryCheckBox(cat)}
                   />
                   <label>{cat}</label>
-                  <br />
-                </>
+                </div>
               ))}
             </div>
-            <div>
-              <p>IDEAL FOR</p>
 
-              <input type="checkbox" />
-              <label>Men</label>
-              <br />
-
-              <input type="checkbox" />
-              <label>Women</label>
-              <br />
-
-              <input type="checkbox" />
-              <label>Children</label>
-              <br />
-
-              <input type="checkbox" />
-              <label>Couples</label>
-              <br />
-            </div>
+            {/* Discount Filter */}
             <div>
               <p>DISCOUNT</p>
-
-              <input
-                type="checkbox"
-                onChange={() => handleDiscountCheckBox(40)}
-              />
-              <label>40% or more</label>
-              <br />
-              <input
-                type="checkbox"
-                onChange={() => handleDiscountCheckBox(30)}
-              />
-              <label>30% or more</label>
-              <br />
-              <input
-                type="checkbox"
-                onChange={() => handleDiscountCheckBox(20)}
-              />
-              <label>20% or more</label>
-              <br />
-              <input
-                type="checkbox"
-                onChange={() => handleDiscountCheckBox(10)}
-              />
-              <label>10% or more</label>
+              {[40, 30, 20, 10].map((d) => (
+                <div key={d}>
+                  <input
+                    type="checkbox"
+                    checked={discount.includes(d)}
+                    onChange={() => handleDiscountCheckBox(d)}
+                  />
+                  <label>{d}% or more</label>
+                </div>
+              ))}
             </div>
+
+            {/* Rating Filter */}
             <div>
-              <p>Customers Rating</p>
-              <input type="checkbox" onChange={() => handleRatingCheckbox(4)} />
-              <label>4 and above</label>
-              <br />
-              <input type="checkbox" onChange={() => handleRatingCheckbox(3)} />
-              <label>3 and above</label>
+              <p>CUSTOMER RATING</p>
+              {[4, 3].map((r) => (
+                <div key={r}>
+                  <input
+                    type="checkbox"
+                    checked={rating.includes(r)}
+                    onChange={() => handleRatingCheckbox(r)}
+                  />
+                  <label>{r}★ & above</label>
+                </div>
+              ))}
             </div>
           </div>
+
+          {/* Product Cards */}
           <div className="mainpanel">
-            {Searched.length <= 0
-              ? Product.map((prod) => (
-                  <div className="searched-card">
-                    <img
-                      src={prod.images[0]}
-                      alt="img"
-                      onClick={() => Navigate(`/productDetails/${prod.id}`)}
-                    />
-                    <div className="title">
-                      <span>upto {prod.discountPercentage}% off</span>
-                      <h5>Deal Of The Day.</h5>
-                    </div>
-                    <p>{prod.description.slice(0, 30)}...</p>
-                    {Cart.some((cart) => cart.id === prod.id) ? (
-                      <button
-                        style={{
-                          backgroundColor: "red",
-                          color: "white",
-                          width: "100%",
-                        }}
-                        onClick={() => REMOVECART(prod.id)}
-                      >
-                        {<RemoveShoppingCartIcon />}REMOVE FROM CART
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => ADDTOCART(prod)}
-                        style={{
-                          backgroundColor: "green",
-                          color: "white",
-                          width: "100%",
-                        }}
-                      >
-                        {<ShoppingCartOutlinedIcon />}ADD TO CART
-                      </button>
-                    )}
-                  </div>
-                ))
-              : Searched.map((prod) => (
-                  <div className="searched-card">
-                    <img
-                      src={prod.images[0]}
-                      alt="img"
-                      onClick={() => Navigate(`/productDetails/${prod.id}`)}
-                    />
-                    <div className="title">
-                      <span>upto {prod.discountPercentage}% off</span>
-                      <h5>Deal Of The Day.</h5>
-                    </div>
-                    <p>{prod.description.slice(0, 30)}...</p>
-                    {Cart.some((cart) => cart.id === prod.id) ? (
-                      <button
-                        style={{
-                          backgroundColor: "red",
-                          color: "white",
-                          width: "100%",
-                        }}
-                        onClick={() => REMOVECART(prod.id)}
-                      >
-                        {<RemoveShoppingCartIcon />}REMOVE FROM CART
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => ADDTOCART(prod)}
-                        style={{
-                          backgroundColor: "green",
-                          color: "white",
-                          width: "100%",
-                        }}
-                      >
-                        {<ShoppingCartOutlinedIcon />}ADD TO CART
-                      </button>
-                    )}
-                  </div>
-                ))}
+            {filteredProducts.map((prod) => (
+              <div className="searched-card" key={prod.id}>
+                <img
+                  src={prod.images[0]}
+                  alt={prod.title}
+                  onClick={() => Navigate(`/productDetails/${prod.id}`)}
+                />
+                <div className="title">
+                  <span>upto {prod.discountPercentage}% off</span>
+                  <h5>Deal Of The Day</h5>
+                </div>
+                <p>{prod.description.slice(0, 30)}...</p>
+                {Cart.some((cart) => cart.id === prod.id) ? (
+                  <button
+                    style={{
+                      backgroundColor: "red",
+                      color: "white",
+                      width: "100%",
+                    }}
+                    onClick={() => REMOVECART(prod.id)}
+                  >
+                    <RemoveShoppingCartIcon /> REMOVE FROM CART
+                  </button>
+                ) : (
+                  <button
+                    style={{
+                      backgroundColor: "green",
+                      color: "white",
+                      width: "100%",
+                    }}
+                    onClick={() => ADDTOCART(prod)}
+                  >
+                    <ShoppingCartOutlinedIcon /> ADD TO CART
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </>
   );
 };
+
 export default SearchedProducts;

@@ -1,107 +1,136 @@
+/* Reset */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
+/* Section Wrapper */
 .popular {
-  margin: 0.5%;
   width: 100%;
-  /* Remove fixed height */
-  padding: 10px 0;
-  background-color: #f9f9f9;
-  overflow: hidden; /* Prevent children from overflowing */
+  padding: 14px 2%;
+  background: transparent;
+  position: relative; /* for absolute nav buttons */
 }
 
+.popular h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--accent, #0b76ef);
+}
+
+/* Flex container for cards + buttons */
 .popular .popular-sec {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 5px;
-  flex-wrap: nowrap;
-  overflow-x: hidden; /* Enable scroll if needed */
-  padding-bottom: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px; /* consistent gap between cards */
+  overflow: hidden;
+  padding: 8px 56px; /* leave space for side nav buttons */
+  align-items: start;
 }
 
+/* Navigation Buttons */
 .popular-sec button {
-  min-width: 50px;
-  height: 50px;
-  padding: 0 12px;
-  background-color: white;
+  min-width: 45px;
+  height: 45px;
+  background: var(--card, #fff);
   border: none;
-  box-shadow: 2px 2px 6px rgba(132, 132, 132, 0.4);
-  color: #555;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+  color: var(--muted, #6b7280);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
   flex-shrink: 0;
-  transition: all 0.3s ease;
 }
 
+.popular-sec button:hover { transform: translateY(-2px) }
+
+/* Product Card */
 .popular-sec .popular-card {
-  width: 18%;
-  min-width: 220px; /* prevents squishing on small screens */
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
-  padding: 10px;
+  width: 100%;
+  background: var(--card, #fff);
+  border-radius: 12px;
+  box-shadow: 0 12px 36px rgba(15,23,42,0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  flex-shrink: 0;
+  justify-content: flex-start;
+  min-height: 320px; /* ensure cards are same height */
 }
 
 .popular-sec .popular-card:hover {
-  transform: scale(1.02);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
+/* Product Image */
 .popular-card img {
   width: 100%;
-  height: 70%;
-  object-fit: contain;
-  border-radius: 10px;
-  margin: auto;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
 }
 
+/* Title & Tag */
 .popular-card .title {
-  margin-top: 10px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  margin-bottom: 5px;
 }
 
 .popular-card .title span {
   padding: 4px 8px;
-  background-color: #cc0c39;
-  color: white;
-  font-weight: 500;
-  border-radius: 4px;
-  font-size: 0.85rem;
+  background: var(--accent-2, #cc0c39);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 6px;
+  font-size: 0.82rem;
 }
 
 .popular-card .title h5 {
-  color: #cc0c39;
-  font-size: 1rem;
+  color: var(--accent, #0b76ef);
+  font-size: 0.95rem;
+  font-weight: 700;
   margin: 0;
 }
 
+/* Description */
 .popular-card p {
-  margin-top: 6px;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #444;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.3;
 }
 
-/* Responsive Breakpoints */
-@media (max-width: 1024px) {
-  .popular-card {
+/* =========================
+   Responsive
+   ========================= */
+@media (max-width: 1200px) {
+  .popular-sec .popular-card {
+    width: 22%;
+  }
+}
+
+@media (max-width: 992px) {
+  .popular-sec .popular-card {
     width: 30%;
   }
 }
 
 @media (max-width: 768px) {
-  .popular-card {
+  .popular-sec {
+    gap: 12px;
+  }
+  .popular-sec .popular-card {
     width: 45%;
   }
 }
@@ -109,9 +138,19 @@
 @media (max-width: 480px) {
   .popular .popular-sec {
     justify-content: center;
-    flex: 0 0 100%;
   }
   .popular-sec .popular-card {
     width: 90%;
   }
+}
+
+/* absolute small nav buttons on sides */
+.nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;background:var(--card,#fff);box-shadow:0 8px 24px rgba(15,23,42,0.06);color:var(--muted,#6b7280);cursor:pointer}
+.nav-btn[disabled]{opacity:.35;cursor:not-allowed}
+.nav-left{left:10px}
+.nav-right{right:10px}
+
+@media (max-width:768px){
+  .nav-btn{display:none}
+  .popular .popular-sec{padding:6px 12px}
 }

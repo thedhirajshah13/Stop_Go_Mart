@@ -26,14 +26,17 @@ const MostLiked = () => {
   return (
     <div className="popular">
       <h3>Most Liked</h3>
-      <div className="popular-sec">
-        
-        {popularPage > 0 && (
-          <button onClick={() => setPopularPage(popularPage - 1)}>
-            <ArrowBackIosIcon />
-          </button>
-        )}
+      {/* Left nav */}
+      <button
+        className="nav-btn nav-left"
+        onClick={() => setPopularPage((p) => Math.max(0, p - 1))}
+        aria-label="Previous"
+        disabled={popularPage <= 0}
+      >
+        <ArrowBackIosIcon fontSize="small" />
+      </button>
 
+      <div className="popular-sec">
         {isLoading
           ? Array.from({ length: 5 }).map((_, index) => (
               <div className="popular-card" key={index}>
@@ -47,30 +50,29 @@ const MostLiked = () => {
               .slice(popularPage * 5, popularPage * 5 + 5)
               .map((prod) => (
                 <div className="popular-card" key={prod.id}>
-                {
-                  console.log(prod.images?"yes0":"no")
-                }
                   <img
                     src={prod.images[0]}
-                    alt="img"
+                    alt={prod.title}
                     onClick={() => navigate(`/productDetails/${prod.id}`)}
                   />
                   <div className="title">
-                    <span style={{ backgroundColor: 'green', color: 'white' }}>
-                      {prod.rating}☆
-                    </span>
-                    <h5 style={{ color: 'green' }}>Most Trusted.</h5>
+                    <span>{prod.rating}☆</span>
+                    <h5>Most Trusted.</h5>
                   </div>
                   <p>{prod.description.slice(0, 30)}...</p>
                 </div>
               ))}
-
-        {popularPage < Math.floor(filteredProducts.length / 5) && (
-          <button onClick={() => setPopularPage(popularPage + 1)}>
-            <ArrowForwardIosIcon />
-          </button>
-        )}
       </div>
+
+      {/* Right nav */}
+      <button
+        className="nav-btn nav-right"
+        onClick={() => setPopularPage((p) => p + 1)}
+        aria-label="Next"
+        disabled={popularPage >= Math.floor(filteredProducts.length / 5)}
+      >
+        <ArrowForwardIosIcon fontSize="small" />
+      </button>
     </div>
   );
 };

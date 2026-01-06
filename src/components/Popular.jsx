@@ -39,14 +39,18 @@ const Popular = () => {
   return (
     <div className="popular">
       <h3>Hot Deals</h3>
-      <div className="popular-sec">
-        
-        {popularPage > 0 && (
-          <button onClick={() => setpopularPage(popularPage - 1)}>
-            <ArrowBackIosIcon />
-          </button>
-        )}
 
+      {/* Left pagination button */}
+      <button
+        className="nav-btn nav-left"
+        onClick={() => setpopularPage((p) => Math.max(0, p - 1))}
+        aria-label="Previous"
+        disabled={popularPage <= 0}
+      >
+        <ArrowBackIosIcon fontSize="small" />
+      </button>
+
+      <div className="popular-sec">
         {isLoading
           ? Array.from({ length: 5 }).map((_, index) => (
               <div className="popular-card" key={index}>
@@ -62,7 +66,7 @@ const Popular = () => {
                 <div className="popular-card" key={prod.id}>
                   <img
                     src={prod.images[0]}
-                    alt="img"
+                    alt={prod.title}
                     onClick={() => Navigate(`/productDetails/${prod.id}`)}
                   />
                   <div className="title">
@@ -72,13 +76,17 @@ const Popular = () => {
                   <p>{prod.description.slice(0, 30)}...</p>
                 </div>
               ))}
-
-        {popularPage < Math.floor(filteredProducts.length / 5) && (
-          <button onClick={() => setpopularPage(popularPage + 1)}>
-            <ArrowForwardIosIcon />
-          </button>
-        )}
       </div>
+
+      {/* Right pagination button */}
+      <button
+        className="nav-btn nav-right"
+        onClick={() => setpopularPage((p) => p + 1)}
+        aria-label="Next"
+        disabled={popularPage >= Math.floor(filteredProducts.length / 5)}
+      >
+        <ArrowForwardIosIcon fontSize="small" />
+      </button>
     </div>
   );
 };
