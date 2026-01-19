@@ -4,6 +4,9 @@ A fully functional **E-commerce web application** built using **React.js and CSS
 
 The application uses a **Dummy Products API** to simulate real-world e-commerce functionality.
 
+🔗 Live Demo:
+👉 https://shop-circle.netlify.app
+
 ---
 
 ## 🚀 Features
